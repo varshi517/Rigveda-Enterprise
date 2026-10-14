@@ -1,58 +1,9 @@
-import {
-
-  ArrowRight,
-
-  Building2,
-
-  CheckCircle2,
-
-  ChevronRight,
-
-  Droplets,
-
-  HardHat,
-  Mail,
-
-  MapPin,
-
-  Menu,
-
-  Phone,
-
-  Paintbrush,
-
-  ShieldCheck,
-
-  Sparkles,
-
-  Wrench,
-
-  X,
-
-  Zap,
-
-  MessageCircle,
-
-} from "lucide-react";
-
-
-
+import {ArrowRight,Building2,CheckCircle2,ChevronRight,Droplets,HardHat,Mail,MapPin,Menu,Phone,Paintbrush,ShieldCheck,Sparkles,Wrench,X,Zap,MessageCircle,} from "lucide-react";
 import { useState } from "react";
-
 import "./App.css";
-
-
-
 function App() {
-
   const [menuOpen, setMenuOpen] = useState(false);
-
-
-
   const closeMenu = () => setMenuOpen(false);
-
-
-
   const services = [
 
     {
@@ -171,12 +122,6 @@ function App() {
 
     <div className="app">
 
-
-
-      {/\* ================= NAVBAR ================= */}
-
-
-
       <header className="navbar">
 
         <a href="#home" className="brand" onClick={closeMenu}>
@@ -184,8 +129,6 @@ function App() {
           <div className="brand-mark">
             <img className="brand-logo" src="/rigveda-logo.png" alt="Rigveda Enterprises logo" />
           </div>
-
-
 
           <div className="brand-text">
 
@@ -196,9 +139,6 @@ function App() {
           </div>
 
         </a>
-
-
-
         <nav className={menuOpen ? "nav-links mobile-open" : "nav-links"}>
 
           <a href="#home" onClick={closeMenu}>Home</a>
@@ -222,9 +162,6 @@ function App() {
           <ArrowRight size={16} />
 
         </a>
-
-
-
         <button
 
           className="menu-button"
@@ -241,34 +178,13 @@ function App() {
 
       </header>
 
-
-
-
-
-      {/\* ================= HERO ================= */}
-
-
-
       <main>
-
-
-
         <section id="home" className="hero">
-
-
 
           <div className="hero-background-image"></div>
 
-
-
           <div className="hero-overlay"></div>
-
-
-
           <div className="hero-content">
-
-
-
             <div className="hero-brand-emblem">
               <img src="/rigveda-logo.png" alt="Rigveda Enterprises royal gold emblem" />
             </div>
@@ -281,20 +197,13 @@ function App() {
 
             </div>
 
-
-
             <h1>
-
               Building better.
 
               <span>Maintaining smarter.</span>
 
             </h1>
-
-
-
             <p>
-
               Rigveda Enterprises delivers integrated MEP, facility
 
               management, maintenance, civil and infrastructure solutions
@@ -302,13 +211,7 @@ function App() {
               for modern workplaces and facilities.
 
             </p>
-
-
-
             <div className="hero-actions">
-
-
-
               <a href="#services" className="primary-button">
 
                 Explore Services
@@ -316,25 +219,14 @@ function App() {
                 <ArrowRight size={18} />
 
               </a>
-
-
-
               <a href="#contact" className="glass-button">
 
                 Talk to Us
 
               </a>
-
-
-
             </div>
 
-
-
             <div className="hero-trust">
-
-
-
               <div className="trust-item">
 
                 <CheckCircle2 size={17} />
@@ -342,9 +234,6 @@ function App() {
                 <span>Reliable Service</span>
 
               </div>
-
-
-
               <div className="trust-item">
 
                 <CheckCircle2 size={17} />
@@ -352,9 +241,6 @@ function App() {
                 <span>Safety Focused</span>
 
               </div>
-
-
-
               <div className="trust-item">
 
                 <CheckCircle2 size={17} />
@@ -362,33 +248,15 @@ function App() {
                 <span>Client Focused</span>
 
               </div>
-
-
-
             </div>
-
-
-
           </div>
-
-
-
           <div className="hero-side-card">
-
-
-
             <div className="side-card-icon">
 
               <ShieldCheck size={25} />
 
             </div>
-
-
-
             <span>ONE PARTNER</span>
-
-
-
             <h3>
 
               Multiple
@@ -398,9 +266,6 @@ function App() {
               Solutions.
 
             </h3>
-
-
-
             <p>
 
               From MEP systems to facility maintenance and infrastructure
@@ -408,27 +273,9 @@ function App() {
               support.
 
             </p>
-
-
-
           </div>
-
-
-
         </section>
-
-
-
-
-
-        {/\* ================= QUICK STATS ================= */}
-
-
-
         <section className="stats">
-
-
-
           <div className="stat-item">
 
             <strong>MEP</strong>
@@ -436,9 +283,6 @@ function App() {
             <span>Engineering Services</span>
 
           </div>
-
-
-
           <div className="stat-item">
 
             <strong>FM</strong>
@@ -446,9 +290,6 @@ function App() {
             <span>Facility Management</span>
 
           </div>
-
-
-
           <div className="stat-item">
 
             <strong>24/7</strong>
@@ -456,9 +297,6 @@ function App() {
             <span>Maintenance Mindset</span>
 
           </div>
-
-
-
           <div className="stat-item">
 
             <strong>01</strong>
@@ -466,29 +304,10 @@ function App() {
             <span>Integrated Partner</span>
 
           </div>
-
-
-
         </section>
-
-
-
-
-
-        {/\* ================= ABOUT ================= */}
-
-
-
         <section id="about" className="about-section">
-
-
-
           <div className="section-intro">
-
-
-
             <div>
-
               <span className="section-tag">ABOUT RIGVEDA</span>
 
 
@@ -647,12 +466,6 @@ function App() {
 
 
 
-
-
-        {/\* ================= SERVICES ================= */}
-
-
-
         <section id="services" className="services-section">
 
 
@@ -770,13 +583,6 @@ function App() {
         </section>
 
 
-
-
-
-        {/\* ================= WHY RIGVEDA ================= */}
-
-
-
         <section className="why-section">
 
 
@@ -856,14 +662,6 @@ function App() {
 
 
         </section>
-
-
-
-
-
-        {/\* ================= PROJECTS ================= */}
-
-
 
         <section id="projects" className="projects-section">
 
@@ -961,14 +759,6 @@ function App() {
 
         </section>
 
-
-
-
-
-        {/\* ================= CTA ================= */}
-
-
-
         <section className="cta-section">
 
 
@@ -1026,14 +816,6 @@ function App() {
 
 
         </section>
-
-
-
-
-
-        {/\* ================= CONTACT ================= */}
-
-
 
         <section id="contact" className="contact-section">
 
@@ -1331,16 +1113,7 @@ function App() {
 
         </section>
 
-
-
       </main>
-
-
-
-
-
-      {/\* ================= FOOTER ================= */}
-
 
 
       <footer>

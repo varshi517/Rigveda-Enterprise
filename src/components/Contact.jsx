@@ -91,11 +91,11 @@ export default function Contact() {
           <div className="contact-detail">
             <div><Phone size={20} /></div>
             <span>Phone</span>
-            <a href="tel:+919121043579">+91 91210 43579</a>
+            <a href="tel:+919848618143">+91 98486 18143</a>
           </div>
 
           <a
-            href="https://wa.me/919121043579"
+            href="https://wa.me/919848618143"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-detail whatsapp-contact"

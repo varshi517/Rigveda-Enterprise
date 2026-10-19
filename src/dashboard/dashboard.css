@@ -155,3 +155,499 @@
     padding: 17px;
   }
 }
+
+/* =========================================================
+   RIGVEDA ENTERPRISES — ROYAL DASHBOARD DESIGN UPGRADE
+   Append this section to the END of dashboard.css
+   ========================================================= */
+
+:root {
+  --rigveda-burgundy: #45152b;
+  --rigveda-burgundy-deep: #2b0b1b;
+  --rigveda-wine: #702c48;
+  --rigveda-gold: #d6a64f;
+  --rigveda-gold-light: #f4dfaa;
+  --rigveda-cream: #fffaf1;
+  --rigveda-surface: #ffffff;
+  --rigveda-text: #35242d;
+  --rigveda-muted: #83727b;
+  --rigveda-border: #eadde2;
+  --rigveda-green: #247953;
+  --rigveda-blue: #4169a8;
+  --rigveda-purple: #8352a0;
+  --rigveda-shadow: 0 8px 28px rgba(69, 21, 43, 0.07);
+  --rigveda-shadow-hover: 0 15px 38px rgba(69, 21, 43, 0.13);
+}
+
+/* Smooth page appearance */
+
+@keyframes rigvedaFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rigvedaGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(214, 166, 79, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 22px rgba(214, 166, 79, 0.15);
+  }
+}
+
+@keyframes rigvedaShimmer {
+  from {
+    background-position: 100% 50%;
+  }
+
+  to {
+    background-position: -100% 50%;
+  }
+}
+
+/* Main dashboard page */
+
+.dash-page,
+.dashboard-page,
+.dashboard-container {
+  color: var(--rigveda-text);
+}
+
+.dash-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      ellipse at top right,
+      rgba(244, 223, 170, 0.23),
+      transparent 36%
+    ),
+    linear-gradient(145deg, #fffaf5 0%, #f8f2ed 52%, #fdf9f4 100%);
+}
+
+/* Dashboard header */
+
+.dash-header {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(244, 223, 170, 0.22);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(214, 166, 79, 0.23),
+      transparent 29%
+    ),
+    linear-gradient(
+      125deg,
+      var(--rigveda-burgundy-deep),
+      var(--rigveda-burgundy) 58%,
+      var(--rigveda-wine)
+    );
+  color: #fffaf1;
+  box-shadow: 0 14px 35px rgba(43, 11, 27, 0.19);
+}
+
+.dash-header::after {
+  position: absolute;
+  z-index: -1;
+  right: -55px;
+  bottom: -100px;
+  width: 240px;
+  height: 240px;
+  border: 1px solid rgba(244, 223, 170, 0.2);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 24px rgba(244, 223, 170, 0.035),
+    0 0 0 48px rgba(244, 223, 170, 0.025);
+  content: "";
+  pointer-events: none;
+}
+
+.dash-header h1,
+.dash-header h2 {
+  color: #fffaf1;
+  letter-spacing: -0.6px;
+}
+
+.dash-header p {
+  color: rgba(255, 250, 241, 0.76);
+}
+
+.dash-header button {
+  border: 1px solid rgba(244, 223, 170, 0.5);
+  border-radius: 11px;
+  background: linear-gradient(
+    135deg,
+    var(--rigveda-gold-light),
+    var(--rigveda-gold)
+  );
+  color: var(--rigveda-burgundy-deep);
+  font-weight: 750;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dash-header button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(214, 166, 79, 0.22);
+}
+
+/* Navigation tabs */
+
+.dash-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  padding: 9px;
+  border: 1px solid var(--rigveda-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--rigveda-shadow);
+  backdrop-filter: blur(12px);
+}
+
+.dash-tabs button,
+.dash-tabs a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: #705563;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dash-tabs button:hover,
+.dash-tabs a:hover {
+  transform: translateY(-1px);
+  border-color: #eedbb7;
+  background: #fff8e9;
+  color: var(--rigveda-burgundy);
+}
+
+/* Active tab */
+
+.dash-tabs button.active,
+.dash-tabs button[aria-current="page"] {
+  border-color: transparent;
+  background: linear-gradient(
+    135deg,
+    var(--rigveda-burgundy),
+    var(--rigveda-wine)
+  );
+  color: #fffaf1;
+  box-shadow: 0 4px 12px rgba(69, 21, 43, 0.18);
+}
+
+/* Overview cards */
+
+.dash-overview,
+.overview-cards,
+.dashboard-stats {
+  gap: 17px;
+}
+
+.dash-overview > *,
+.overview-cards > *,
+.dashboard-stats > * {
+  min-width: 0;
+  border: 1px solid var(--rigveda-border);
+  border-radius: 17px;
+  background: var(--rigveda-surface);
+  box-shadow: var(--rigveda-shadow);
+  animation: rigvedaFadeUp 0.45s ease both;
+  transition:
+    transform 0.23s ease,
+    box-shadow 0.23s ease,
+    border-color 0.23s ease;
+}
+
+.dash-overview > *:hover,
+.overview-cards > *:hover,
+.dashboard-stats > *:hover {
+  transform: translateY(-4px);
+  border-color: #dfc18c;
+  box-shadow: var(--rigveda-shadow-hover);
+}
+
+/* Dashboard content panels */
+
+.dash-content,
+.dash-panel,
+.dash-table-wrap {
+  border-color: var(--rigveda-border);
+  border-radius: 17px;
+}
+
+.dash-panel,
+.dash-table-wrap {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--rigveda-shadow);
+}
+
+.dash-content h2,
+.dash-content h3,
+.dash-panel h2,
+.dash-panel h3 {
+  color: var(--rigveda-burgundy);
+}
+
+/* Forms and search controls */
+
+.dash-page input,
+.dash-page select,
+.dash-page textarea {
+  max-width: 100%;
+  border: 1px solid #e4d5dc;
+  border-radius: 10px;
+  background-color: #fffdfb;
+  color: var(--rigveda-text);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.dash-page input:focus,
+.dash-page select:focus,
+.dash-page textarea:focus {
+  border-color: var(--rigveda-gold);
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(214, 166, 79, 0.15);
+}
+
+.dash-page input::placeholder,
+.dash-page textarea::placeholder {
+  color: #a5959c;
+}
+
+/* Primary buttons in the dashboard */
+
+.dash-page button:not(.dash-tabs button) {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.dash-page button:active {
+  transform: scale(0.98);
+}
+
+.dash-page button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Tables */
+
+.dash-page table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.dash-page thead th {
+  padding: 14px 15px;
+  border-bottom: 1px solid var(--rigveda-border);
+  background: #faf2e8;
+  color: #765466;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.65px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dash-page tbody td {
+  padding: 14px 15px;
+  border-bottom: 1px solid #f2e9e8;
+  color: #59434e;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.dash-page tbody tr {
+  transition: background-color 0.18s ease;
+}
+
+.dash-page tbody tr:hover {
+  background-color: #fff9f0;
+}
+
+.dash-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Status badges — safe for common status names */
+
+.status-new {
+  background-color: #fff0d9;
+  color: #995b14;
+}
+
+.status-contacted {
+  background-color: #f1e6fa;
+  color: #754298;
+}
+
+.status-in_progress {
+  background-color: #e5edff;
+  color: #3158a0;
+}
+
+.status-completed {
+  background-color: #e0f5e8;
+  color: #237348;
+}
+
+.status-closed {
+  background-color: #eee8e9;
+  color: #695861;
+}
+
+/* Reports, projects, customers and follow-up panels */
+
+.reports-panel,
+.projects-list-panel,
+.project-form,
+.customer-panel,
+.follow-up-panel,
+.reports-summary-card {
+  transition:
+    box-shadow 0.23s ease,
+    border-color 0.23s ease,
+    transform 0.23s ease;
+}
+
+.reports-panel:hover,
+.projects-list-panel:hover,
+.project-form:hover,
+.customer-panel:hover,
+.follow-up-panel:hover {
+  border-color: #e4d0ad;
+  box-shadow: var(--rigveda-shadow-hover);
+}
+
+/* Scrollable tables on smaller screens */
+
+.dash-table-wrap,
+.projects-table-scroll,
+.reports-summary-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Accessible keyboard focus */
+
+.dash-page button:focus-visible,
+.dash-page a:focus-visible {
+  outline: 3px solid rgba(214, 166, 79, 0.85);
+  outline-offset: 3px;
+}
+
+/* Tablet layout */
+
+@media (max-width: 900px) {
+  .dash-tabs {
+    gap: 7px;
+  }
+
+  .dash-tabs button,
+  .dash-tabs a {
+    padding: 9px 11px;
+    font-size: 12px;
+  }
+
+  .dash-overview,
+  .overview-cards,
+  .dashboard-stats {
+    gap: 12px;
+  }
+}
+
+/* Mobile layout */
+
+@media (max-width: 600px) {
+  .dash-header {
+    border-radius: 16px;
+  }
+
+  .dash-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .dash-tabs button,
+  .dash-tabs a {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 9px 7px;
+    font-size: 12px;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .dash-overview,
+  .overview-cards,
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dash-page thead th,
+  .dash-page tbody td {
+    padding: 11px 10px;
+    font-size: 12px;
+  }
+
+  .dash-page input,
+  .dash-page select,
+  .dash-page textarea {
+    font-size: 16px;
+  }
+
+  .reports-header-actions {
+    width: 100%;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

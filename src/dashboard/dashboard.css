@@ -1,2 +1,157 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;600;700;800&display=swap');
 .dash-shell{min-height:100vh;padding:32px clamp(18px,5vw,72px);background:#f7f1e7;color:#2b100d;font-family:'DM Sans',sans-serif}.dash-shell h1,.dash-shell h2{font-family:Manrope,sans-serif}.dash-shell a{color:#8c5b17;text-decoration:none}.login-card{max-width:440px;margin:7vh auto;background:#fffaf2;border:1px solid #e5d4b4;border-radius:22px;padding:30px;box-shadow:0 18px 55px #32130d12}.login-card img{width:76px;height:76px;object-fit:contain}.login-card p,.login-card small{color:#76625c;line-height:1.6}.login-card form{display:grid;gap:16px;margin:22px 0}.login-card label{display:grid;gap:7px;font-weight:600}.login-card input{padding:12px;border:1px solid #ddcbb0;border-radius:10px;font:inherit}.dash-shell button{border:0;border-radius:10px;background:#7b2d20;color:#fff;padding:12px 16px;font:inherit;font-weight:700;cursor:pointer}.dash-header,.dash-table-title{display:flex;align-items:center;justify-content:space-between;gap:16px}.dash-header span{letter-spacing:.18em;font-size:12px;color:#a17a3d}.dash-tabs{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:28px 0}.dash-tabs button{background:#fffaf2;border:1px solid #e4d2b2;color:#4b2720}.dash-tabs button.active{background:#7b2d20;color:white}.dash-tabs a{margin-left:auto}.dash-table-wrap{background:#fffaf2;border:1px solid #ead9bc;border-radius:18px;padding:22px}.dash-records{display:grid;gap:12px}.dash-record{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:16px;border:1px solid #eadfcf;border-radius:12px}.dash-record p{margin:5px 0;color:#76625c;overflow-wrap:anywhere}.dash-record select{padding:9px;border:1px solid #ddcbb0;border-radius:8px;background:white}.dash-note{font-size:13px;color:#76625c;margin-top:18px}.status-message{padding:10px 12px;border-radius:9px}.status-success{background:#e8f6eb;color:#205b31}.status-error{background:#fff0ec;color:#8b2c1d}.status-info{background:#f5ecd9;color:#654715}@media(max-width:600px){.dash-record{align-items:flex-start;flex-direction:column}.dash-tabs a{margin-left:0}}
+
+/* Enquiry management additions */
+
+.enquiry-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.enquiry-stat {
+  padding: 20px;
+  border: 1px solid rgba(217, 164, 65, 0.35);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fffaf0, #ffffff);
+  box-shadow: 0 6px 20px rgba(38, 8, 6, 0.06);
+}
+
+.enquiry-stat span {
+  display: block;
+  margin-bottom: 10px;
+  color: #705d50;
+  font-size: 0.88rem;
+}
+
+.enquiry-stat strong {
+  color: #260806;
+  font-size: 1.9rem;
+}
+
+.dash-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(150px, 1fr);
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.dash-filters input,
+.dash-filters select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #ded5ca;
+  border-radius: 10px;
+  background: #fff;
+  color: #260806;
+  font: inherit;
+}
+
+.dash-filters input:focus,
+.dash-filters select:focus {
+  outline: 2px solid #d9a441;
+  outline-offset: 2px;
+}
+
+.dash-result-count {
+  color: #705d50;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 560px) {
+  .dash-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .enquiry-stat {
+    padding: 15px;
+  }
+}
+
+/* Dashboard overview cards */
+.dashboard-overview {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin: 24px 0;
+}
+
+.overview-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+  padding: 22px 18px;
+  border: 1px solid #eadfd3;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgba(53, 23, 16, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.overview-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 24px rgba(53, 23, 16, 0.1);
+}
+
+.overview-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.overview-card p {
+  margin: 0 0 7px;
+  color: #786960;
+  font-size: 13px;
+}
+
+.overview-card strong {
+  color: #351710;
+  font-size: 29px;
+  line-height: 1.2;
+}
+
+.overview-enquiries .overview-icon {
+  background: #fcebdc;
+  color: #a65b24;
+}
+
+.overview-customers .overview-icon {
+  background: #e3f4e9;
+  color: #267448;
+}
+
+.overview-projects .overview-icon {
+  background: #e7edff;
+  color: #4059a5;
+}
+
+.overview-followups .overview-icon {
+  background: #f4e5f6;
+  color: #894c91;
+}
+
+@media (max-width: 1000px) {
+  .dashboard-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-overview {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .overview-card {
+    padding: 17px;
+  }
+}

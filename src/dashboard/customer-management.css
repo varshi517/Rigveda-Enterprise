@@ -1,0 +1,337 @@
+.customer-management {
+  display: grid;
+  gap: 22px;
+  color: #2d211c;
+}
+
+.customer-heading,
+.customer-section-heading,
+.customer-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.customer-heading {
+  padding: 8px 0 2px;
+}
+
+.customer-eyebrow {
+  color: #98712c;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.customer-heading h2 {
+  margin: 7px 0;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.customer-heading p,
+.customer-section-heading p,
+.customer-list-heading p {
+  margin: 5px 0 0;
+  color: #81736c;
+  font-size: 0.9rem;
+}
+
+.customer-management button {
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.customer-management button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.customer-management button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.customer-refresh,
+.customer-cancel-button {
+  padding: 10px 15px;
+  border: 1px solid #ded4c9;
+  border-radius: 10px;
+  background: #fff;
+  color: #47362c;
+  font-weight: 650 !important;
+}
+
+.customer-form-card,
+.customer-list-card {
+  min-width: 0;
+  padding: clamp(16px, 3vw, 25px);
+  border: 1px solid #eadfd2;
+  border-radius: 17px;
+  background: #fffdf9;
+  box-shadow: 0 7px 24px rgb(54 35 19 / 4%);
+}
+
+.customer-section-heading {
+  margin-bottom: 22px;
+}
+
+.customer-section-heading h3,
+.customer-list-heading h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.customer-form-icon,
+.customer-count {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 12px;
+  background: #f6ebd5;
+  color: #805c20;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.customer-count {
+  font-size: 1rem;
+}
+
+.customer-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.customer-form label {
+  display: grid;
+  gap: 8px;
+  color: #514137;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.customer-form input,
+.customer-search input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.customer-form input {
+  min-height: 45px;
+  padding: 11px 13px;
+  border: 1px solid #e2d7cb;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+  color: #30231c;
+}
+
+.customer-form input:focus,
+.customer-search:focus-within {
+  border-color: #bd9148;
+  box-shadow: 0 0 0 3px rgb(189 145 72 / 13%);
+}
+
+.customer-email-field {
+  grid-column: 1 / -1;
+}
+
+.customer-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  grid-column: 1 / -1;
+}
+
+.customer-primary-button {
+  padding: 12px 19px;
+  border: 0;
+  border-radius: 9px;
+  background: #382019;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+.customer-primary-button:hover:not(:disabled) {
+  background: #543123;
+}
+
+.customer-message {
+  padding: 12px 15px;
+  border: 1px solid;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.customer-message.success {
+  border-color: #b8ddc2;
+  background: #effaf1;
+  color: #236b37;
+}
+
+.customer-message.error {
+  border-color: #f0c3be;
+  background: #fff1ef;
+  color: #a33329;
+}
+
+.customer-list-heading {
+  margin-bottom: 18px;
+}
+
+.customer-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 0 13px;
+  border: 1px solid #e5dcd2;
+  border-radius: 10px;
+  background: #fff;
+  color: #8a786b;
+}
+
+.customer-search > span {
+  font-size: 1.5rem;
+}
+
+.customer-search input {
+  min-height: 46px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #30231c;
+}
+
+.customer-record-list {
+  display: grid;
+}
+
+.customer-record {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 0;
+  border-bottom: 1px solid #eee5dc;
+}
+
+.customer-record:last-child {
+  border-bottom: 0;
+}
+
+.customer-avatar {
+  display: grid;
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #ead8b7;
+  border-radius: 50%;
+  background: #f8edda;
+  color: #7b5724;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.customer-record-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.customer-record-info h4 {
+  margin: 0 0 7px;
+  overflow-wrap: anywhere;
+  font-size: 0.98rem;
+}
+
+.customer-record-info p {
+  margin: 4px 0;
+  overflow-wrap: anywhere;
+  color: #786a61;
+  font-size: 0.86rem;
+}
+
+.customer-record-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.customer-record-actions button {
+  padding: 8px 11px;
+  border: 1px solid #e2d6c8;
+  border-radius: 8px;
+  background: #fff;
+  color: #493529;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.customer-record-actions .customer-delete-button {
+  border-color: #f0d2ce;
+  color: #b13d34;
+}
+
+.customer-empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 38px 15px;
+  text-align: center;
+  color: #76685e;
+}
+
+.customer-empty-icon {
+  font-size: 2rem;
+}
+
+.customer-empty strong {
+  color: #49362b;
+}
+
+.customer-empty p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .customer-heading {
+    align-items: flex-start;
+  }
+
+  .customer-refresh {
+    padding: 9px 10px;
+    font-size: 0.82rem !important;
+  }
+
+  .customer-form {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-email-field,
+  .customer-form-actions {
+    grid-column: auto;
+  }
+
+  .customer-record {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .customer-record-info {
+    width: calc(100% - 65px);
+  }
+
+  .customer-record-actions {
+    width: 100%;
+    padding-left: 59px;
+  }
+}

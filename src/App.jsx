@@ -14,48 +14,9 @@ import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
 import Dashboard from "./dashboard/Dashboard.jsx";
 
-export default function App() {
-  const [showDashboard, setShowDashboard] = useState(
-    window.location.hash === "#/dashboard"
-  );
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      setShowDashboard(window.location.hash === "#/dashboard");
-    };
-
-    window.addEventListener("hashchange", handleHashChange);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
-  }, []);
-
-  if (showDashboard) {
-    return <Dashboard />;
-  }
-
+function PublicWebsite() {
   return (
     <div className="app">
-      <a
-        href="#/dashboard"
-        style={{
-          position: "fixed",
-          right: "18px",
-          bottom: "18px",
-          zIndex: 9999,
-          padding: "12px 18px",
-          borderRadius: "8px",
-          background: "#260806",
-          color: "#f3d58a",
-          textDecoration: "none",
-          fontWeight: 700,
-          boxShadow: "0 4px 14px rgba(0,0,0,0.2)"
-        }}
-      >
-        Partner Login
-      </a>
-
       <Header />
 
       <main>
@@ -72,4 +33,28 @@ export default function App() {
       <Footer />
     </div>
   );
+}
+
+export default function App() {
+  const getRoute = () => window.location.hash || "#/";
+
+  const [route, setRoute] = useState(getRoute);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setRoute(getRoute());
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
+  if (route === "#/admin-login" || route === "#/dashboard") {
+    return <Dashboard />;
+  }
+
+  return <PublicWebsite />;
 }

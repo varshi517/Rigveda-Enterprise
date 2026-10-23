@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Mail,
@@ -10,28 +10,78 @@ import {
 } from "lucide-react";
 import { supabase, isSupabaseConfigured } from "../lib/supabase.js";
 
+const EMPTY_FORM = {
+  customer_name: "",
+  phone: "",
+  email: "",
+  service: "",
+  message: "",
+};
+
+const SERVICES = [
+  "Mechanical",
+  "Electrical",
+  "Plumbing",
+  "Facility Management",
+  "Painting & Civil",
+  "Road & Infrastructure",
+  "Other",
+];
+
 export default function Contact() {
-  const [form, setForm] = useState({
-    customer_name: "",
-    phone: "",
-    email: "",
-    service: "",
-    message: "",
-  });
+  const [form, setForm] = useState(() => ({
+    ...EMPTY_FORM,
+    service: new URLSearchParams(window.location.search).get("service") || "",
+  }));
+
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [feedbackType, setFeedbackType] = useState("");
+
+  // Update the selected service when a visitor arrives from a service card.
+  useEffect(() => {
+    function syncServiceFromUrl() {
+      const requestedService =
+        new URLSearchParams(window.location.search).get("service") || "";
+
+      if (requestedService && SERVICES.includes(requestedService)) {
+        setForm((previous) => ({
+          ...previous,
+          service: requestedService,
+        }));
+      }
+    }
+
+    syncServiceFromUrl();
+    window.addEventListener("popstate", syncServiceFromUrl);
+
+    return () => {
+      window.removeEventListener("popstate", syncServiceFromUrl);
+    };
+  }, []);
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setForm((previous) => ({ ...previous, [name]: value }));
+
+    setForm((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+
+    setFeedback("");
+    setFeedbackType("");
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     setFeedback("");
+    setFeedbackType("");
 
     if (!isSupabaseConfigured || !supabase) {
-      setFeedback("The enquiry service is not configured. Please try again later.");
+      setFeedback(
+        "Our enquiry service is temporarily unavailable. Please contact us by phone or WhatsApp."
+      );
+      setFeedbackType("error");
       return;
     }
 
@@ -49,22 +99,28 @@ export default function Contact() {
         },
       ]);
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
-      setFeedback("Thank you! Your enquiry has been sent successfully.");
+      setFeedback(
+        "Thank you! Your enquiry has been sent successfully. Our team will get back to you."
+      );
+      setFeedbackType("success");
+
       setForm({
-        customer_name: "",
-        phone: "",
-        email: "",
-        service: "",
-        message: "",
+        ...EMPTY_FORM,
+        service:
+          new URLSearchParams(window.location.search).get("service") || "",
       });
     } catch (error) {
       console.error("Enquiry submission failed:", error);
+
       setFeedback(
         error.message ||
-          "We couldn't send your enquiry. Please try again."
+          "We couldn't send your enquiry. Please try again or contact us directly."
       );
+      setFeedbackType("error");
     } finally {
       setSubmitting(false);
     }
@@ -83,13 +139,15 @@ export default function Contact() {
 
         <p>
           Get in touch with Rigveda Enterprises for MEP,
-          facility-management, maintenance and infrastructure
+          facility-management, maintenance, and infrastructure
           requirements.
         </p>
 
         <div className="contact-details">
           <div className="contact-detail">
-            <div><Phone size={20} /></div>
+            <div>
+              <Phone size={20} />
+            </div>
             <span>Phone</span>
             <a href="tel:+919848618143">+91 98486 18143</a>
           </div>
@@ -100,13 +158,17 @@ export default function Contact() {
             rel="noopener noreferrer"
             className="contact-detail whatsapp-contact"
           >
-            <div><MessageCircle size={20} /></div>
+            <div>
+              <MessageCircle size={20} />
+            </div>
             <span>WhatsApp</span>
             <strong>Chat with us</strong>
           </a>
 
           <div className="contact-detail">
-            <div><Mail size={20} /></div>
+            <div>
+              <Mail size={20} />
+            </div>
             <span>Email</span>
             <a href="mailto:bvarshi417@gmail.com">
               bvarshi417@gmail.com
@@ -114,7 +176,9 @@ export default function Contact() {
           </div>
 
           <div className="contact-detail">
-            <div><MapPin size={20} /></div>
+            <div>
+              <MapPin size={20} />
+            </div>
             <span>Location</span>
             <strong>
               Vanasthalipuram, Hyderabad, Telangana, India
@@ -135,7 +199,9 @@ export default function Contact() {
           you need.
         </h3>
 
-        <p>Share your requirements with us and we'll get back to you.</p>
+        <p>
+          Share your requirements with us and we'll get back to you.
+        </p>
 
         <form className="enquiry-form" onSubmit={handleSubmit}>
           <div className="form-row">
@@ -148,6 +214,7 @@ export default function Contact() {
                 placeholder="Your name"
                 value={form.customer_name}
                 onChange={handleChange}
+                autoComplete="name"
                 required
               />
             </div>
@@ -161,6 +228,7 @@ export default function Contact() {
                 placeholder="Your phone number"
                 value={form.phone}
                 onChange={handleChange}
+                autoComplete="tel"
                 required
               />
             </div>
@@ -175,6 +243,7 @@ export default function Contact() {
               placeholder="Your email address"
               value={form.email}
               onChange={handleChange}
+              autoComplete="email"
               required
             />
           </div>
@@ -189,13 +258,12 @@ export default function Contact() {
               required
             >
               <option value="">Select a service</option>
-              <option value="Mechanical">Mechanical</option>
-              <option value="Electrical">Electrical</option>
-              <option value="Plumbing">Plumbing</option>
-              <option value="Facility Management">Facility Management</option>
-              <option value="Painting & Civil">Painting & Civil</option>
-              <option value="Road & Infrastructure">Road & Infrastructure</option>
-              <option value="Other">Other</option>
+
+              {SERVICES.map((service) => (
+                <option key={service} value={service}>
+                  {service}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -204,7 +272,7 @@ export default function Contact() {
             <textarea
               id="message"
               name="message"
-              rows="4"
+              rows={4}
               placeholder="Tell us briefly about your requirement..."
               value={form.message}
               onChange={handleChange}
@@ -213,7 +281,11 @@ export default function Contact() {
           </div>
 
           {feedback && (
-            <p role="status" aria-live="polite">
+            <p
+              className={`enquiry-feedback ${feedbackType}`}
+              role="status"
+              aria-live="polite"
+            >
               {feedback}
             </p>
           )}

@@ -5,7 +5,7 @@ export default function About() { return (
           <div className="section-intro">
             <div>
               <span className="section-tag">ABOUT RIGVEDA</span>
-
+              
 
 
               <h2>

@@ -897,3 +897,132 @@
     transition: none;
   }
 }
+
+.dash-record-service,
+.dash-record-notes {
+  overflow-wrap: anywhere;
+}
+
+.dash-record-message {
+  margin-top: 12px;
+  padding: 13px 15px;
+  color: #263344;
+  background: #f3f8ff;
+  border: 1px solid #d8e6fa;
+  border-left: 4px solid #3984f5;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
+.dash-record-message > strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #245c91;
+  font-size: 0.8rem;
+}
+
+.dash-record-message p {
+  margin: 0;
+  color: #475467;
+  white-space: pre-wrap;
+  line-height: 1.65;
+}
+
+.dash-record {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.dash-record-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-record-name {
+  display: block;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+.dash-record-service,
+.dash-record-email,
+.dash-record-phone,
+.dash-record-status {
+  margin: 7px 0;
+  overflow-wrap: anywhere;
+}
+
+.dash-record-message {
+  margin: 14px 0;
+  padding: 14px 16px;
+  color: #263344;
+  background: #f3f8ff;
+  border: 1px solid #d8e6fa;
+  border-left: 4px solid #3984f5;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
+.dash-record-message > strong,
+.dash-record-notes > strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #245c91;
+  font-size: 0.82rem;
+}
+
+.dash-record-message p,
+.dash-record-notes p {
+  margin: 0;
+  color: #475467;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+.dash-record-notes {
+  margin: 12px 0;
+  padding: 12px 14px;
+  background: #fff8e9;
+  border: 1px solid #f4e0ad;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
+.dash-record-notes > strong {
+  color: #946200;
+}
+
+.dash-record-date {
+  display: block;
+  margin-top: 12px;
+  color: #667085;
+}
+
+.dash-record-actions {
+  flex: 0 0 170px;
+}
+
+.dash-record-actions label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.dash-record-actions select {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .dash-record {
+    flex-direction: column;
+  }
+
+  .dash-record-actions {
+    width: 100%;
+    flex-basis: auto;
+  }
+}

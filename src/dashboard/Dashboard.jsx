@@ -6,7 +6,6 @@ import CustomerManagement from "./CustomerManagement.jsx";
 import FollowUpManagement from "./FollowUpManagement.jsx";
 import ProjectsManagement from "./ProjectsManagement.jsx";
 import ReportsManagement from "./ReportsManagement.jsx";
-import ProjectProgress from "../components/ProjectProgress";
 import "./dashboard.css";
 
 const TABLES = ["enquiries", "customers", "projects", "follow_ups"];
@@ -46,19 +45,43 @@ const OVERVIEW_CARDS = [
   },
 ];
 
+function formatDate(date) {
+  if (!date) return "Date unavailable";
+
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return "Date unavailable";
+  }
+
+  return parsedDate.toLocaleString();
+}
+
+function getStatusLabel(status) {
+  return (
+    STATUSES.find((item) => item.value === status)?.label ||
+    status ||
+    "New"
+  );
+}
+
 export default function Dashboard() {
   const [session, setSession] = useState(null);
-  const [checkingSession, setCheckingSession] = useState(true);
+  const [sessionLoading, setSessionLoading] = useState(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [section, setSection] = useState("enquiries");
   const [rows, setRows] = useState([]);
+
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("error");
+
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [updatingIds, setUpdatingIds] = useState([]);
 
   const [overviewCounts, setOverviewCounts] = useState({
     enquiries: 0,
@@ -67,41 +90,51 @@ export default function Dashboard() {
     follow_ups: 0,
   });
 
-  // Check for an existing Supabase session.
+  // --------------------------------------------------
+  // Supabase authentication
+  // --------------------------------------------------
+
   useEffect(() => {
     if (!supabase) {
-      setCheckingSession(false);
-      return;
+      setSessionLoading(false);
+      return undefined;
     }
 
     let active = true;
 
-    async function checkSession() {
+    async function getCurrentSession() {
       try {
         const { data, error } = await supabase.auth.getSession();
 
         if (!active) return;
 
-        if (error) throw error;
-
-        setSession(data.session ?? null);
+        if (error) {
+          setMessage(error.message);
+          setMessageType("error");
+        } else {
+          setSession(data.session);
+        }
       } catch (error) {
         if (active) {
-          setMessage(error.message || "Could not check your session.");
+          setMessage(error?.message || "Unable to check your session.");
           setMessageType("error");
         }
       } finally {
-        if (active) setCheckingSession(false);
+        if (active) {
+          setSessionLoading(false);
+        }
       }
     }
 
-    checkSession();
+    getCurrentSession();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-      setCheckingSession(false);
+      if (active) {
+        setSession(newSession);
+        setSessionLoading(false);
+      }
     });
 
     return () => {
@@ -110,17 +143,12 @@ export default function Dashboard() {
     };
   }, []);
 
-  // Load counts when signed in.
+  // --------------------------------------------------
+  // Load dashboard overview counts
+  // --------------------------------------------------
+
   useEffect(() => {
-    if (!session || !supabase) {
-      setOverviewCounts({
-        enquiries: 0,
-        customers: 0,
-        projects: 0,
-        follow_ups: 0,
-      });
-      return;
-    }
+    if (!session || !supabase) return undefined;
 
     let cancelled = false;
 
@@ -139,24 +167,36 @@ export default function Dashboard() {
 
       TABLES.forEach((table, index) => {
         const result = results[index];
-        nextCounts[table] = result.error ? 0 : (result.count ?? 0);
+
+        nextCounts[table] = result.error ? 0 : result.count ?? 0;
       });
 
       setOverviewCounts(nextCounts);
     }
 
-    loadOverviewCounts();
+    loadOverviewCounts().catch((error) => {
+      if (!cancelled) {
+        console.error("Unable to load dashboard counts:", error);
+      }
+    });
 
     return () => {
       cancelled = true;
     };
   }, [session]);
 
-  // Load records for the selected section.
+  // --------------------------------------------------
+  // Load records for the selected section
+  // --------------------------------------------------
+
   async function load() {
     if (!supabase || !session) return;
 
-    if (section === "customers" || section === "follow_ups") {
+    if (
+      section === "customers" ||
+      section === "follow_ups" ||
+      section === "reports"
+    ) {
       setRows([]);
       setLoading(false);
       return;
@@ -176,8 +216,9 @@ export default function Dashboard() {
 
       setRows(data || []);
     } catch (error) {
+      console.error(`Unable to load ${section}:`, error);
       setRows([]);
-      setMessage(error.message || "Could not load records.");
+      setMessage(error?.message || "Could not load records.");
       setMessageType("error");
     } finally {
       setLoading(false);
@@ -190,7 +231,11 @@ export default function Dashboard() {
       return;
     }
 
-    if (section === "customers" || section === "follow_ups") {
+    if (
+      section === "customers" ||
+      section === "follow_ups" ||
+      section === "reports"
+    ) {
       setRows([]);
       setLoading(false);
       setMessage("");
@@ -199,27 +244,35 @@ export default function Dashboard() {
 
     load();
 
-    // Loading depends on the selected section and current session.
+    // load uses the current selected section.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, section]);
+
+  // --------------------------------------------------
+  // Search and status filtering
+  // --------------------------------------------------
 
   const filteredRows = useMemo(() => {
     const term = search.trim().toLowerCase();
 
     return rows.filter((row) => {
+      const searchableValues = [
+        row.customer_name,
+        row.name,
+        row.phone,
+        row.email,
+        row.service,
+        row.company,
+        row.message,
+        row.description,
+        row.notes,
+        row.status,
+      ];
+
       const matchesSearch =
         !term ||
-        [
-          row.customer_name,
-          row.name,
-          row.phone,
-          row.email,
-          row.service,
-          row.company,
-          row.message,
-          row.notes,
-        ].some((value) =>
-          String(value || "").toLowerCase().includes(term)
+        searchableValues.some((value) =>
+          String(value ?? "").toLowerCase().includes(term)
         );
 
       const matchesStatus =
@@ -228,6 +281,10 @@ export default function Dashboard() {
       return matchesSearch && matchesStatus;
     });
   }, [rows, search, statusFilter]);
+
+  // --------------------------------------------------
+  // Enquiry status counts
+  // --------------------------------------------------
 
   const enquiryCounts = useMemo(
     () => ({
@@ -240,36 +297,48 @@ export default function Dashboard() {
     [rows]
   );
 
+  // --------------------------------------------------
+  // Partner login
+  // --------------------------------------------------
+
   async function login(event) {
     event.preventDefault();
 
-    if (!supabase) return;
+    if (!supabase) {
+      setMessage("Supabase is not configured.");
+      setMessageType("error");
+      return;
+    }
 
     setLoading(true);
     setMessage("");
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
       });
 
       if (error) throw error;
 
+      setSession(data.session);
       setPassword("");
-      window.location.hash = "#/dashboard";
+      setMessage("");
     } catch (error) {
-      setMessage(error.message || "Sign-in failed.");
+      setMessage(error?.message || "Sign-in failed.");
       setMessageType("error");
     } finally {
       setLoading(false);
     }
   }
 
+  // --------------------------------------------------
+  // Sign out
+  // --------------------------------------------------
+
   async function logout() {
     if (!supabase) return;
 
-    setLoading(true);
     setMessage("");
 
     try {
@@ -278,21 +347,27 @@ export default function Dashboard() {
       if (error) throw error;
 
       setSession(null);
-      setPassword("");
       setRows([]);
-      window.location.hash = "#/admin-login";
+      setSearch("");
+      setStatusFilter("all");
     } catch (error) {
-      setMessage(error.message || "Could not sign out.");
+      setMessage(error?.message || "Could not sign out.");
       setMessageType("error");
-    } finally {
-      setLoading(false);
     }
   }
 
+  // --------------------------------------------------
+  // Update enquiry or record status
+  // --------------------------------------------------
+
   async function updateStatus(row, value) {
-    if (!supabase || !session) return;
+    if (!supabase || !row?.id) return;
 
     const previousRows = rows;
+
+    setUpdatingIds((current) =>
+      current.includes(row.id) ? current : [...current, row.id]
+    );
 
     setRows((current) =>
       current.map((item) =>
@@ -314,34 +389,53 @@ export default function Dashboard() {
       setMessageType("success");
     } catch (error) {
       setRows(previousRows);
-      setMessage(error.message || "Could not update status.");
+      setMessage(error?.message || "Could not update status.");
       setMessageType("error");
+    } finally {
+      setUpdatingIds((current) =>
+        current.filter((id) => id !== row.id)
+      );
     }
   }
 
-  // Configuration check.
+  // --------------------------------------------------
+  // Supabase configuration screen
+  // --------------------------------------------------
+
   if (!isSupabaseConfigured || !supabase) {
     return (
       <main className="dash-shell">
         <h1>Rigveda Partner Dashboard</h1>
+
         <StatusMessage type="error">
           Supabase is not configured. Check your environment variables.
         </StatusMessage>
+
         <a href="/">Return to website</a>
       </main>
     );
   }
 
-  // Prevent a login-screen flash while restoring the session.
-  if (checkingSession) {
+  // --------------------------------------------------
+  // Initial session loading
+  // --------------------------------------------------
+
+  if (sessionLoading) {
     return (
       <main className="dash-shell">
-        <p>Checking secure session…</p>
+        <section className="login-card">
+          <img src="/rigveda-logo.png" alt="Rigveda Enterprises logo" />
+          <h1>Loading dashboard...</h1>
+          <p>Please wait while we check your partner session.</p>
+        </section>
       </main>
     );
   }
 
-  // Sign-in screen.
+  // --------------------------------------------------
+  // Partner sign-in screen
+  // --------------------------------------------------
+
   if (!session) {
     return (
       <main className="dash-shell">
@@ -350,8 +444,9 @@ export default function Dashboard() {
         <section className="login-card">
           <img src="/rigveda-logo.png" alt="Rigveda Enterprises logo" />
 
-          <h1>Admin sign in</h1>
-          <p>Private access for authorized administrators only.</p>
+          <h1>Partner sign in</h1>
+
+          <p>Private access for authorized partners only.</p>
 
           <form onSubmit={login}>
             <label>
@@ -362,6 +457,7 @@ export default function Dashboard() {
                 required
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
+                placeholder="Enter your partner email"
               />
             </label>
 
@@ -373,11 +469,12 @@ export default function Dashboard() {
                 required
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
+                placeholder="Enter your password"
               />
             </label>
 
             <button type="submit" disabled={loading}>
-              {loading ? "Signing in…" : "Sign in"}
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 
@@ -388,15 +485,18 @@ export default function Dashboard() {
           )}
 
           <small>
-            Sign in with the administrator account created in Supabase.
-            Public sign-up should remain disabled.
+            Create authorized partner accounts in Supabase Authentication.
+            Keep public sign-up disabled.
           </small>
         </section>
       </main>
     );
   }
 
-  // Authenticated dashboard.
+  // --------------------------------------------------
+  // Main dashboard
+  // --------------------------------------------------
+
   return (
     <main className="dash-shell">
       <header className="dash-header">
@@ -405,10 +505,12 @@ export default function Dashboard() {
           <h1>Business dashboard</h1>
         </div>
 
-        <button type="button" onClick={logout} disabled={loading}>
-          {loading ? "Please wait…" : "Sign out"}
+        <button type="button" onClick={logout}>
+          Sign out
         </button>
       </header>
+
+      {/* Overview cards */}
 
       <section className="dashboard-overview">
         {OVERVIEW_CARDS.map((card) => (
@@ -419,15 +521,18 @@ export default function Dashboard() {
             <span className="overview-icon" aria-hidden="true">
               {card.icon}
             </span>
+
             <div>
               <p>{card.label}</p>
-              <strong>{overviewCounts[card.key]}</strong>
+              <strong>{overviewCounts[card.key] ?? 0}</strong>
             </div>
           </article>
         ))}
       </section>
 
-      <nav className="dash-tabs">
+      {/* Dashboard navigation */}
+
+      <nav className="dash-tabs" aria-label="Dashboard sections">
         {TABLES.map((table) => (
           <button
             type="button"
@@ -462,12 +567,14 @@ export default function Dashboard() {
         <a href="/">View website ↗</a>
       </nav>
 
+      {/* Specialized dashboard sections */}
+
       {section === "customers" ? (
         <CustomerManagement />
       ) : section === "follow_ups" ? (
         <FollowUpManagement />
-            ) : section === 'projects' ? (
-            <ProjectProgress />
+      ) : section === "projects" ? (
+        <ProjectsManagement />
       ) : section === "reports" ? (
         <ReportsManagement />
       ) : (
@@ -478,13 +585,18 @@ export default function Dashboard() {
             </StatusMessage>
           )}
 
+          {/* Enquiry summary */}
+
           {section === "enquiries" && (
             <section className="enquiry-summary">
               {[
                 { label: "Loaded Enquiries", value: enquiryCounts.total },
                 { label: "New", value: enquiryCounts.new },
                 { label: "Contacted", value: enquiryCounts.contacted },
-                { label: "In Progress", value: enquiryCounts.inProgress },
+                {
+                  label: "In Progress",
+                  value: enquiryCounts.inProgress,
+                },
                 { label: "Completed", value: enquiryCounts.completed },
               ].map((item) => (
                 <article className="enquiry-stat" key={item.label}>
@@ -495,21 +607,29 @@ export default function Dashboard() {
             </section>
           )}
 
+          {/* Records */}
+
           <section className="dash-table-wrap">
             <div className="dash-table-title">
               <h2>
-                {section[0].toUpperCase() + section.slice(1)}
+                {section === "enquiries"
+                  ? "Customer Enquiries"
+                  : section[0].toUpperCase() + section.slice(1)}
               </h2>
 
-              <button type="button" onClick={load} disabled={loading}>
-                {loading ? "Refreshing…" : "Refresh"}
+              <button
+                type="button"
+                onClick={load}
+                disabled={loading}
+              >
+                {loading ? "Refreshing..." : "Refresh"}
               </button>
             </div>
 
             <div className="dash-filters">
               <input
                 type="search"
-                placeholder="Search name, phone, email..."
+                placeholder="Search name, phone, email, description..."
                 aria-label="Search records"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
@@ -521,6 +641,7 @@ export default function Dashboard() {
                 onChange={(event) => setStatusFilter(event.target.value)}
               >
                 <option value="all">All statuses</option>
+
                 {STATUSES.map((status) => (
                   <option value={status.value} key={status.value}>
                     {status.label}
@@ -530,12 +651,12 @@ export default function Dashboard() {
             </div>
 
             {loading ? (
-              <p>Loading records…</p>
+              <p>Loading records...</p>
             ) : filteredRows.length === 0 ? (
               <p>
                 {rows.length === 0
                   ? "No records found yet."
-                  : "No records match your search or filter."}
+                  : "No records match your search or status filter."}
               </p>
             ) : (
               <>
@@ -545,61 +666,118 @@ export default function Dashboard() {
                 </p>
 
                 <div className="dash-records">
-                  {filteredRows.map((row) => (
-                    <article className="dash-record" key={row.id}>
-                      <div>
-                        <strong>
-                          {row.customer_name || row.name || "Record"}
-                        </strong>
+                  {filteredRows.map((row) => {
+                    const customerName =
+                      row.customer_name || row.name || "Record";
 
-                        <p>
-                          {row.email || row.phone || row.company || ""}
-                        </p>
+                    const description =
+                      row.message ?? row.description ?? "";
 
-                        {row.phone && row.email && <p>{row.phone}</p>}
+                    return (
+                      <article className="dash-record" key={row.id}>
+                        <div className="dash-record-main">
+                          <strong className="dash-record-name">
+                            {customerName}
+                          </strong>
 
-                        <p>
-                          {row.service || row.notes || row.message || ""}
-                        </p>
+                          {row.email && (
+                            <p className="dash-record-email">
+                              <strong>Email:</strong>{" "}
+                              <a href={`mailto:${row.email}`}>
+                                {row.email}
+                              </a>
+                            </p>
+                          )}
 
-                        <small>
-                          {row.created_at
-                            ? new Date(row.created_at).toLocaleString()
-                            : ""}
-                        </small>
-                      </div>
+                          {row.phone && (
+                            <p className="dash-record-phone">
+                              <strong>Phone:</strong>{" "}
+                              <a href={`tel:${row.phone}`}>
+                                {row.phone}
+                              </a>
+                            </p>
+                          )}
 
-                      {row.status && (
-                        <select
-                          aria-label={`Status for ${
-                            row.customer_name || row.name || "record"
-                          }`}
-                          value={row.status}
-                          onChange={(event) =>
-                            updateStatus(row, event.target.value)
-                          }
-                        >
-                          {STATUSES.map((status) => (
-                            <option
-                              value={status.value}
-                              key={status.value}
-                            >
-                              {status.label}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </article>
-                  ))}
+                          {row.company && (
+                            <p>
+                              <strong>Company:</strong> {row.company}
+                            </p>
+                          )}
+
+                          {row.service && (
+                            <p className="dash-record-service">
+                              <strong>Service:</strong> {row.service}
+                            </p>
+                          )}
+
+                          {/* Main fix: display the enquiry message separately. */}
+
+                          {String(description).trim() !== "" && (
+                            <div className="dash-record-message">
+                              <strong>Enquiry description</strong>
+                              <p>{description}</p>
+                            </div>
+                          )}
+
+                          {row.notes && (
+                            <div className="dash-record-notes">
+                              <strong>Notes</strong>
+                              <p>{row.notes}</p>
+                            </div>
+                          )}
+
+                          {row.status && (
+                            <p className="dash-record-status">
+                              <strong>Status:</strong>{" "}
+                              {getStatusLabel(row.status)}
+                            </p>
+                          )}
+
+                          <small className="dash-record-date">
+                            Submitted: {formatDate(row.created_at)}
+                          </small>
+                        </div>
+
+                        {row.status && (
+                          <div className="dash-record-actions">
+                            <label>
+                              Update status
+                              <select
+                                aria-label={`Status for ${customerName}`}
+                                value={row.status}
+                                disabled={updatingIds.includes(row.id)}
+                                onChange={(event) =>
+                                  updateStatus(row, event.target.value)
+                                }
+                              >
+                                {STATUSES.map((status) => (
+                                  <option
+                                    value={status.value}
+                                    key={status.value}
+                                  >
+                                    {status.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+
+                            {updatingIds.includes(row.id) && (
+                              <small>Saving status...</small>
+                            )}
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
                 </div>
               </>
             )}
           </section>
 
           <p className="dash-note">
-            Enquiry counts and search cover the latest 200 records loaded
-            from the database. Database access must also be protected
-            with appropriate Supabase RLS policies.
+            Counts and records reflect the latest 200 records loaded from
+            the database. Dashboard access requires an authenticated
+            partner account.
           </p>
         </>
       )}

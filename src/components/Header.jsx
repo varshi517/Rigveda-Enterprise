@@ -59,7 +59,6 @@ export default function Header() {
 
   return (
     <header className="navbar">
-      {/* Official Rigveda Enterprises logo */}
       <a
         href="#home"
         className="brand official-brand"
@@ -73,7 +72,6 @@ export default function Header() {
         />
       </a>
 
-      {/* Main navigation */}
       <nav
         className={menuOpen ? "nav-links mobile-open" : "nav-links"}
         aria-label="Main navigation"
@@ -85,9 +83,7 @@ export default function Header() {
         <a href="#contact" onClick={closeMenu}>Contact</a>
       </nav>
 
-      {/* Contact actions */}
       <div className="header-actions">
-        {/* Call dropdown */}
         <div className="call-dropdown">
           <button
             type="button"
@@ -143,7 +139,6 @@ export default function Header() {
           )}
         </div>
 
-        {/* WhatsApp dropdown */}
         <div className="whatsapp-dropdown">
           <button
             type="button"
@@ -204,7 +199,6 @@ export default function Header() {
           )}
         </div>
 
-        {/* Get a quote */}
         <a
           href="#contact"
           className="nav-cta"
@@ -215,7 +209,6 @@ export default function Header() {
         </a>
       </div>
 
-      {/* Mobile navigation toggle */}
       <button
         type="button"
         className="menu-button"

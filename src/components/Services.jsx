@@ -1,6 +1,5 @@
 
 import {
-  ArrowUpRight,
   Building2,
   Droplets,
   ShieldCheck,
@@ -16,6 +15,7 @@ const services = [
     description:
       "Electrical project works and related technical services.",
     icon: Zap,
+    color: "electrical",
   },
   {
     number: "02",
@@ -23,6 +23,7 @@ const services = [
     description:
       "Heating, ventilation and air-conditioning project works.",
     icon: Droplets,
+    color: "hvac",
   },
   {
     number: "03",
@@ -30,6 +31,7 @@ const services = [
     description:
       "Mechanical project works and technical support.",
     icon: Wrench,
+    color: "mechanical",
   },
   {
     number: "04",
@@ -37,6 +39,7 @@ const services = [
     description:
       "Civil works and project-related services.",
     icon: Building2,
+    color: "civil",
   },
   {
     number: "05",
@@ -44,6 +47,7 @@ const services = [
     description:
       "Fire and CCTV project works.",
     icon: ShieldCheck,
+    color: "fire",
   },
   {
     number: "06",
@@ -51,6 +55,7 @@ const services = [
     description:
       "Annual maintenance contracts and breaker maintenance.",
     icon: Wrench,
+    color: "maintenance",
   },
   {
     number: "07",
@@ -58,6 +63,7 @@ const services = [
     description:
       "Relay testing services for technical maintenance requirements.",
     icon: Activity,
+    color: "relay",
   },
   {
     number: "08",
@@ -65,6 +71,7 @@ const services = [
     description:
       "Calibration and troubleshooting services.",
     icon: Activity,
+    color: "calibration",
   },
 ];
 
@@ -74,6 +81,7 @@ export default function Services() {
       <div className="services-heading">
         <div>
           <span className="section-tag">OUR SERVICES</span>
+
           <h2>
             Project expertise.
             <br />
@@ -94,34 +102,24 @@ export default function Services() {
           const Icon = service.icon;
 
           return (
-            <a
-              className="service-card"
+            <article
+              className={`service-card service-${service.color}`}
               key={service.number}
-              href={`/?service=${encodeURIComponent(
-                service.title
-              )}#contact`}
-              aria-label={`Enquire about ${service.title}`}
             >
               <div className="service-top">
                 <span className="service-number">
                   {service.number}
                 </span>
 
-                <div className="service-icon">
+                <div className="service-icon" aria-hidden="true">
                   <Icon size={25} strokeWidth={1.8} />
                 </div>
               </div>
 
               <h3>{service.title}</h3>
-              <p>{service.description}</p>
 
-              <div className="service-card-footer">
-                <span>Discuss this service</span>
-                <span className="service-arrow" aria-hidden="true">
-                  <ArrowUpRight size={20} />
-                </span>
-              </div>
-            </a>
+              <p>{service.description}</p>
+            </article>
           );
         })}
       </div>

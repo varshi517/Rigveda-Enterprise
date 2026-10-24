@@ -7,8 +7,12 @@ import {
   Phone,
   Sparkles,
   MessageCircle,
+  Globe,
 } from "lucide-react";
-import { supabase, isSupabaseConfigured } from "../lib/supabase.js";
+import {
+  supabase,
+  isSupabaseConfigured,
+} from "../lib/supabase.js";
 
 const EMPTY_FORM = {
   customer_name: "",
@@ -19,14 +23,37 @@ const EMPTY_FORM = {
 };
 
 const SERVICES = [
+  "Electrical Projects",
+  "HVAC",
   "Mechanical",
-  "Electrical",
-  "Plumbing",
-  "Facility Management",
-  "Painting & Civil",
-  "Road & Infrastructure",
+  "Civil Works",
+  "Fire & CCTV",
+  "AMC & Breaker Maintenance",
+  "Relay Testing",
+  "Calibration & Troubleshooting",
   "Other",
 ];
+
+const PARTNERS = [
+  {
+    name: "EVM Pavan Kumar",
+    role: "Managing Partner",
+    phone: "+919705023115",
+    displayPhone: "+91 97050 23115",
+  },
+  {
+    name: "IVNS Raju",
+    role: "Managing Partner",
+    phone: "+919985811611",
+    displayPhone: "+91 99858 11611",
+  },
+];
+
+const BUSINESS = {
+  email: "rigvedaenterprises.hyd@gmail.com",
+  location: "Hayathnagar, Hyderabad",
+  website: "https://rigvedaenterprises.com",
+};
 
 export default function Contact() {
   const [form, setForm] = useState(() => ({
@@ -38,13 +65,12 @@ export default function Contact() {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
 
-  // Update the selected service when a visitor arrives from a service card.
   useEffect(() => {
     function syncServiceFromUrl() {
       const requestedService =
         new URLSearchParams(window.location.search).get("service") || "";
 
-      if (requestedService && SERVICES.includes(requestedService)) {
+      if (SERVICES.includes(requestedService)) {
         setForm((previous) => ({
           ...previous,
           service: requestedService,
@@ -79,7 +105,7 @@ export default function Contact() {
 
     if (!isSupabaseConfigured || !supabase) {
       setFeedback(
-        "Our enquiry service is temporarily unavailable. Please contact us by phone or WhatsApp."
+        "Our online enquiry service is temporarily unavailable. Please contact either managing partner by phone or WhatsApp."
       );
       setFeedbackType("error");
       return;
@@ -99,9 +125,7 @@ export default function Contact() {
         },
       ]);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       setFeedback(
         "Thank you! Your enquiry has been sent successfully. Our team will get back to you."
@@ -110,14 +134,13 @@ export default function Contact() {
 
       setForm({
         ...EMPTY_FORM,
-        service:
-          new URLSearchParams(window.location.search).get("service") || "",
+        service: "",
       });
     } catch (error) {
       console.error("Enquiry submission failed:", error);
 
       setFeedback(
-        error.message ||
+        error?.message ||
           "We couldn't send your enquiry. Please try again or contact us directly."
       );
       setFeedbackType("error");
@@ -132,57 +155,73 @@ export default function Contact() {
         <span className="section-tag">CONTACT RIGVEDA</span>
 
         <h2>
-          Let's talk about
+          Let's discuss
           <br />
           <em>your requirements.</em>
         </h2>
 
         <p>
-          Get in touch with Rigveda Enterprises for MEP,
-          facility-management, maintenance, and infrastructure
-          requirements.
+          Contact our managing partners about electrical, HVAC,
+          mechanical, civil, fire and CCTV projects, AMC, breaker
+          maintenance, relay testing, calibration and troubleshooting.
         </p>
 
         <div className="contact-details">
+          {PARTNERS.map((partner) => (
+            <div className="contact-detail" key={partner.phone}>
+              <div>
+                <Phone size={20} aria-hidden="true" />
+              </div>
+
+              <span>{partner.role}</span>
+              <strong>{partner.name}</strong>
+
+              <a href={`tel:${partner.phone}`}>
+                {partner.displayPhone}
+              </a>
+
+              <a
+                className="partner-whatsapp-link"
+                href={`https://wa.me/${partner.phone.replace("+", "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle size={16} aria-hidden="true" />
+                WhatsApp
+              </a>
+            </div>
+          ))}
+
           <div className="contact-detail">
             <div>
-              <Phone size={20} />
-            </div>
-            <span>Phone</span>
-            <a href="tel:+919848618143">+91 98486 18143</a>
-          </div>
-
-          <a
-            href="https://wa.me/919848618143"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-detail whatsapp-contact"
-          >
-            <div>
-              <MessageCircle size={20} />
-            </div>
-            <span>WhatsApp</span>
-            <strong>Chat with us</strong>
-          </a>
-
-          <div className="contact-detail">
-            <div>
-              <Mail size={20} />
+              <Mail size={20} aria-hidden="true" />
             </div>
             <span>Email</span>
-            <a href="mailto:bvarshi417@gmail.com">
-              bvarshi417@gmail.com
+            <a href={`mailto:${BUSINESS.email}`}>
+              {BUSINESS.email}
             </a>
           </div>
 
           <div className="contact-detail">
             <div>
-              <MapPin size={20} />
+              <MapPin size={20} aria-hidden="true" />
             </div>
             <span>Location</span>
-            <strong>
-              Vanasthalipuram, Hyderabad, Telangana, India
-            </strong>
+            <strong>{BUSINESS.location}</strong>
+          </div>
+
+          <div className="contact-detail">
+            <div>
+              <Globe size={20} aria-hidden="true" />
+            </div>
+            <span>Website</span>
+            <a
+              href={BUSINESS.website}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              rigvedaenterprises.com
+            </a>
           </div>
         </div>
       </div>
@@ -190,7 +229,7 @@ export default function Contact() {
       <div className="contact-card">
         <div className="contact-card-header">
           <span>GET STARTED</span>
-          <Sparkles size={19} />
+          <Sparkles size={19} aria-hidden="true" />
         </div>
 
         <h3>
@@ -200,7 +239,7 @@ export default function Contact() {
         </h3>
 
         <p>
-          Share your requirements with us and we'll get back to you.
+          Share your requirements with Rigveda Enterprises.
         </p>
 
         <form className="enquiry-form" onSubmit={handleSubmit}>
@@ -258,7 +297,6 @@ export default function Contact() {
               required
             >
               <option value="">Select a service</option>
-
               {SERVICES.map((service) => (
                 <option key={service} value={service}>
                   {service}
@@ -273,7 +311,7 @@ export default function Contact() {
               id="message"
               name="message"
               rows={4}
-              placeholder="Tell us briefly about your requirement..."
+              placeholder="Tell us about your requirement..."
               value={form.message}
               onChange={handleChange}
               required
@@ -296,7 +334,7 @@ export default function Contact() {
             disabled={submitting}
           >
             {submitting ? "Sending..." : "Send Enquiry"}
-            <ArrowRight size={18} />
+            <ArrowRight size={18} aria-hidden="true" />
           </button>
         </form>
       </div>

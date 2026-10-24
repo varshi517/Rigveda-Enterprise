@@ -13,6 +13,7 @@ import CallToAction from "./components/CallToAction.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
 import Dashboard from "./dashboard/Dashboard.jsx";
+import ProjectProgress from "./components/ProjectProgress.jsx";
 
 function PublicWebsite() {
   return (
@@ -35,6 +36,10 @@ function PublicWebsite() {
   );
 }
 
+function CustomerProjectsPage() {
+  return <ProjectProgress />;
+}
+
 export default function App() {
   const getRoute = () => window.location.hash || "#/";
 
@@ -54,6 +59,10 @@ export default function App() {
 
   if (route === "#/admin-login" || route === "#/dashboard") {
     return <Dashboard />;
+  }
+
+  if (route === "#/customer-projects") {
+    return <CustomerProjectsPage />;
   }
 
   return <PublicWebsite />;

@@ -1,3 +1,4 @@
+
 import {
   ArrowRight,
   CheckCircle2,
@@ -8,10 +9,18 @@ import {
 export default function Hero() {
   return (
     <section id="home" className="hero">
-      <div className="hero-background-image" aria-hidden="true" />
-      <div className="hero-overlay" aria-hidden="true" />
+      <div
+        className="hero-background-image"
+        aria-hidden="true"
+      />
+
+      <div
+        className="hero-overlay"
+        aria-hidden="true"
+      />
 
       <div className="hero-content">
+        {/* Official Rigveda Enterprises logo */}
         <div className="hero-brand-emblem">
           <img
             src="/rigveda-logo.png"
@@ -22,18 +31,21 @@ export default function Hero() {
 
         <div className="hero-badge">
           <Sparkles size={15} aria-hidden="true" />
-          <span>Engineering · Maintenance · Facility Management</span>
+          <span>
+            Projects · Maintenance · Technical Services
+          </span>
         </div>
 
         <h1>
-          Building better.
-          <span>Maintaining smarter.</span>
+          Engineering projects.
+          <span>Technical maintenance.</span>
         </h1>
 
         <p>
-          Rigveda Enterprises delivers integrated MEP, facility
-          management, maintenance, civil, and infrastructure
-          solutions for modern workplaces and facilities.
+          Rigveda Enterprises undertakes electrical, HVAC, mechanical,
+          civil, fire and CCTV projects. Our technical services include
+          annual maintenance contracts, breaker maintenance, relay
+          testing, calibration and troubleshooting.
         </p>
 
         <div className="hero-actions">
@@ -43,24 +55,24 @@ export default function Hero() {
           </a>
 
           <a href="#contact" className="glass-button">
-            Talk to Us
+            Contact Our Partners
           </a>
         </div>
 
         <div className="hero-trust">
           <div className="trust-item">
             <CheckCircle2 size={17} aria-hidden="true" />
-            <span>Reliable Service</span>
+            <span>Project Works</span>
           </div>
 
           <div className="trust-item">
             <CheckCircle2 size={17} aria-hidden="true" />
-            <span>Safety Focused</span>
+            <span>Maintenance Services</span>
           </div>
 
           <div className="trust-item">
             <CheckCircle2 size={17} aria-hidden="true" />
-            <span>Client Focused</span>
+            <span>Technical Support</span>
           </div>
         </div>
       </div>
@@ -70,17 +82,17 @@ export default function Hero() {
           <ShieldCheck size={25} aria-hidden="true" />
         </div>
 
-        <span>ONE PARTNER</span>
+        <span>RIGVEDA ENTERPRISES</span>
 
         <h3>
-          Multiple
+          Projects &
           <br />
-          Solutions.
+          Maintenance.
         </h3>
 
         <p>
-          From MEP systems to facility maintenance and
-          infrastructure support.
+          Electrical, HVAC, mechanical, civil, fire and CCTV project
+          works, supported by specialist maintenance services.
         </p>
       </aside>
     </section>

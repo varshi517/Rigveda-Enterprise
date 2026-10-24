@@ -6,6 +6,7 @@ import CustomerManagement from "./CustomerManagement.jsx";
 import FollowUpManagement from "./FollowUpManagement.jsx";
 import ProjectsManagement from "./ProjectsManagement.jsx";
 import ReportsManagement from "./ReportsManagement.jsx";
+import ProjectProgress from "../components/ProjectProgress";
 import "./dashboard.css";
 
 const TABLES = ["enquiries", "customers", "projects", "follow_ups"];
@@ -465,8 +466,8 @@ export default function Dashboard() {
         <CustomerManagement />
       ) : section === "follow_ups" ? (
         <FollowUpManagement />
-      ) : section === "projects" ? (
-        <ProjectsManagement />
+            ) : section === 'projects' ? (
+            <ProjectProgress />
       ) : section === "reports" ? (
         <ReportsManagement />
       ) : (

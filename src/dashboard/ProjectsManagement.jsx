@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase.js';
 import StatusMessage from '../components/StatusMessage.jsx';
-import './projects-management.css';
+import '../dashboard/projects-management.css';
 
 const PROJECT_STATUSES = [
   { value: 'new', label: 'New' },

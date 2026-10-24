@@ -3,54 +3,68 @@ import {
   ArrowUpRight,
   Building2,
   Droplets,
-  HardHat,
-  Paintbrush,
+  ShieldCheck,
   Wrench,
   Zap,
+  Activity,
 } from "lucide-react";
 
 const services = [
   {
     number: "01",
-    title: "Mechanical",
+    title: "Electrical Projects",
     description:
-      "Mechanical installation, equipment maintenance, and technical support for dependable facility operations.",
-    icon: Wrench,
-  },
-  {
-    number: "02",
-    title: "Electrical",
-    description:
-      "Electrical installations, system maintenance, and reliability-focused support with safety in mind.",
+      "Electrical project works and related technical services.",
     icon: Zap,
   },
   {
-    number: "03",
-    title: "Plumbing",
+    number: "02",
+    title: "HVAC",
     description:
-      "Plumbing installation, repairs, and preventive maintenance to keep essential building systems running.",
+      "Heating, ventilation and air-conditioning project works.",
     icon: Droplets,
   },
   {
-    number: "04",
-    title: "Facility Management",
+    number: "03",
+    title: "Mechanical",
     description:
-      "Coordinated facility support and maintenance to help keep buildings functional, efficient, and well maintained.",
+      "Mechanical project works and technical support.",
+    icon: Wrench,
+  },
+  {
+    number: "04",
+    title: "Civil Works",
+    description:
+      "Civil works and project-related services.",
     icon: Building2,
   },
   {
     number: "05",
-    title: "Painting & Civil",
+    title: "Fire & CCTV",
     description:
-      "Painting, renovation, civil repairs, and improvement works for commercial and industrial spaces.",
-    icon: Paintbrush,
+      "Fire and CCTV project works.",
+    icon: ShieldCheck,
   },
   {
     number: "06",
-    title: "Road & Infrastructure",
+    title: "AMC & Breaker Maintenance",
     description:
-      "Infrastructure and road-related works, site support, and practical project execution.",
-    icon: HardHat,
+      "Annual maintenance contracts and breaker maintenance.",
+    icon: Wrench,
+  },
+  {
+    number: "07",
+    title: "Relay Testing",
+    description:
+      "Relay testing services for technical maintenance requirements.",
+    icon: Activity,
+  },
+  {
+    number: "08",
+    title: "Calibration & Troubleshooting",
+    description:
+      "Calibration and troubleshooting services.",
+    icon: Activity,
   },
 ];
 
@@ -59,18 +73,19 @@ export default function Services() {
     <section id="services" className="services-section">
       <div className="services-heading">
         <div>
-          <span className="section-tag">OUR EXPERTISE</span>
+          <span className="section-tag">OUR SERVICES</span>
           <h2>
-            Services that
+            Project expertise.
             <br />
-            <em>keep things moving.</em>
+            <em>Technical support.</em>
           </h2>
         </div>
 
         <p>
-          From essential MEP systems to facility operations,
-          infrastructure, and maintenance, we bring practical
-          solutions together under one roof.
+          Rigveda Enterprises provides project works across electrical,
+          HVAC, mechanical, civil, fire and CCTV disciplines, along with
+          AMC, breaker maintenance, relay testing, calibration and
+          troubleshooting.
         </p>
       </div>
 

@@ -11,16 +11,16 @@ import {
 
 const CONTACTS = [
   {
-    name: "EVM Pavan Kumar",
-    role: "Managing Partner",
-    phone: "+919705023115",
-    displayPhone: "+91 97050 23115",
-  },
-  {
     name: "IVNS Raju",
     role: "Managing Partner",
     phone: "+919985811611",
     displayPhone: "+91 99858 11611",
+  },
+  {
+    name: "EVM Pavan Kumar",
+    role: "Managing Partner",
+    phone: "+919705023115",
+    displayPhone: "+91 97050 23115",
   },
 ];
 

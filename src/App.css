@@ -2643,17 +2643,7 @@ em {
 
 
 }
-
-
-
-
-
-
-
 .service-arrow {
-
-
-
   position: absolute;
 
 
@@ -2723,81 +2713,19 @@ em {
 
 
 }
-
-
-
-
-
-
-
 /* ================= WHY ================= */
-
-
-
-
-
-
-
 .why-section {
-
-
-
   display: grid;
-
-
-
   grid-template-columns: 1fr 1fr;
-
-
-
   background: var(--navy);
-
-
-
-  color: white;
-
-
-
+    color: white;
 }
-
-
-
-
-
-
-
 .why-image {
-
-
-
   min-height: 680px;
-
-
-
   background:
-
-
-
     linear-gradient(135deg, rgba(22,199,217,.2), rgba(135,87,255,.15)),
-
-
-
-    url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=85")
-
-
-
-    center/cover;
-
-
-
+    url("/public/why-rigveda.jpg") center/cover;
 }
-
-
-
-
-
-
-
 .why-content {
 
 
